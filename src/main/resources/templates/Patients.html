@@ -5,27 +5,29 @@
     <title>Title</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="p-2">
-    <h2 class="text-2xl mb-4">List des Patients</h2>
-    <table class="table-auto w-1/2 border-collapse border ">
+<body class="p-4">
+<div class="shadow-lg rounded   p-2 bg-white">
+    <h2 class="text-2xl mb-4 w-fit">List des Patients</h2>
+        <table class="table-auto w-full  ">
         <thead>
-        <tr class="bg-blue-100 text-blue-600 text-left">
-            <th class="border p-2">ID</th>
-            <th class="border p-2">NOM</th>
-            <th class="border p-2">DATE NAISSANCE</th>
-            <th class="border p-2">MALADE</th>
-            <th class="border p-2">SCORE</th>
+        <tr class="text-left text-gray-600">
+            <th class=" p-2">ID</th>
+            <th class=" p-2">NOM</th>
+            <th class=" p-2">DATE NAISSANCE</th>
+            <th class=" p-2">MALADE</th>
+            <th class=" p-2">SCORE</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="p : ${listPatients}" class="bg-white even:bg-gray-100">
-            <td class="border p-2" th:text="${p.id}"></td>
-            <td class="border p-2" th:text="${p.nom}"></td>
-            <td class="border p-2" th:text="${p.dateNaissance}"></td>
-            <td class="border p-2" th:text="${p.malade}"></td>
-            <td class="border p-2" th:text="${p.score}"></td>
+        <tr th:each="p : ${listPatients}" class="bg-white border-t-2 border-gray-200">
+            <td class=" p-2" th:text="${p.id}"></td>
+            <td class=" p-2" th:text="${p.nom}"></td>
+            <td class=" p-2" th:text="${p.dateNaissance}"></td>
+            <td class=" p-2" th:text="${p.malade}"></td>
+            <td class=" p-2" th:text="${p.score}"></td>
         </tr>
         </tbody>
     </table>
+</div>
 </body>
 </html>
