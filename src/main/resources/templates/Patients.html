@@ -10,6 +10,10 @@
 <body class="p-4">
 <div class="border rounded   p-2 bg-white">
     <h2 class="text-xl mb-4 w-fit">List des Patients</h2>
+    <form th:action="@{index}"  method="GET">
+        <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-4 py-2 my-2 border rounded bg-white">
+        <button type="submit" class="px-4 py-2 my-2 border rounded bg-blue-500 text-white">Search</button>
+    </form>
     <table class="table-auto w-full">
         <thead>
         <tr class="text-left text-gray-600 text-md">
@@ -33,17 +37,17 @@
     <nav aria-label="Page navigation example" >
         <ul class="inline-flex -space-x-px  mt-4 mb-4">
             <li>
-                <a th:href="@{/index(page=${(currentPage - 1)>=0? currentPage - 1:0})}"
+                <a th:href="@{/index(page=${(currentPage - 1)>=0? currentPage - 1:0},keyword=${keyword})}"
                 class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 "
                    th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50'">Previous</a>
             </li>
             <li th:each="page,status:${pages}" >
-                <a th:href="@{/index(page=${status.index})}"
+                <a th:href="@{/index(page=${status.index},keyword=${keyword})}"
                    th:class="${currentPage==status.index?'bg-blue-50 border border-gray-300 text-blue-600 hover:bg-blue-100 hover:text-blue-700  py-2 px-3':'bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3'}"
                    th:text="${status.index+1}"></a>
             </li>
             <li>
-                <a th:href="@{/index(page=${(currentPage + 1) < pages.length ? currentPage + 1 : pages.length - 1})}"
+                <a th:href="@{/index(page=${(currentPage + 1) < pages.length ? currentPage + 1 : pages.length - 1},keyword=${keyword})}"
                    class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 "
                    th:classappend="${currentPage == pages.length - 1} ? 'pointer-events-none opacity-50'">Next</a>
             </li>
