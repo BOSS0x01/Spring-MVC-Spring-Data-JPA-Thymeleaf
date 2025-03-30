@@ -6,13 +6,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/webjars/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body class="p-4">
 <div class="border rounded   p-2 bg-white">
     <h2 class="text-xl mb-4 w-fit">List des Patients</h2>
     <form th:action="@{index}"  method="GET">
-        <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-4 py-2 my-2 border rounded bg-white">
-        <button type="submit" class="px-4 py-2 my-2 border rounded bg-blue-500 text-white">Search</button>
+        <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-2 py-1 my-2 border rounded bg-white">
+        <button type="submit" class="px-2 py-1 my-2 border rounded bg-blue-500 text-white"><i class="fas fa-search"></i> </button>
     </form>
     <table class="table-auto w-full">
         <thead>
@@ -22,6 +23,7 @@
             <th class=" p-2">DATE NAISSANCE</th>
             <th class=" p-2">MALADE</th>
             <th class=" p-2">SCORE</th>
+            <th class=" p-2">ACTION</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +33,11 @@
             <td class=" p-2" th:text="${p.dateNaissance}"></td>
             <td class=" p-2" th:text="${p.malade}"></td>
             <td class=" p-2" th:text="${p.score}"></td>
+            <td class=" p-2">
+                <button onclick="javascript:return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2">
+                    <a th:href="@{delete(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-trash" ></i> </a>
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
