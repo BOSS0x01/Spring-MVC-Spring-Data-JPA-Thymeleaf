@@ -12,10 +12,10 @@ layout:decorate="template1" >
 </head>
 <body class="p-4">
 <div class="border rounded bg-white mx-auto container px-6 py-2 my-6" layout:fragment="content">
-    <h2 class="text-xl mb-4 w-fit">Add Patient</h2>
+    <h2 class="text-xl mb-4 w-fit" th:text="${action }+' ' + Patient"></h2>
     <form th:action="@{save}" th:object="${patient}"  method="post">
 
-
+        <input name="id" type="hidden" placeholder="id" th:field="*{id}" th:value="${patient.id}">
         <input name="name" type="text" placeholder="name" th:field="*{nom}" th:value="${patient.nom}"  class="block px-2 py-1 my-2 border rounded bg-white w-1/3 max-lg:w-full">
         <span class="text-red-500" th:errors="${patient.nom}"></span>
         <input name="birth_date" type="date" placeholder="birth date" th:field="*{dateNaissance}" th:value="${patient.dateNaissance}" class="block px-2 py-1 my-2 border rounded bg-white  w-1/3 max-lg:w-full">

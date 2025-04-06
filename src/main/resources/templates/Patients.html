@@ -41,12 +41,15 @@ layout:decorate="template1" >
                 <button onclick="return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2">
                     <a th:href="@{delete(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-trash" ></i> </a>
                 </button>
+                <button  class="bg-blue-500 text-white text-xs rounded py-1 px-2">
+                    <a th:href="@{editPatient(id=${p.id})}"> <i class="fa fa-edit" ></i> </a>
+                </button>
             </td>
         </tr>
         </tbody>
     </table>
     <nav class="">
-        <ul class="my-4 flex flex-wrap justify-center space-y-6">
+        <ul class="my-4 flex flex-wrap justify-center items-end space-y-6">
             <li>
                 <a th:href="@{/index(page=${(currentPage - 1)>=0? currentPage - 1:0},keyword=${keyword})}"
                 class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 "

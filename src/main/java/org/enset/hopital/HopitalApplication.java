@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
 
@@ -20,9 +21,15 @@ public class HopitalApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        patientRepository.save(new Patient(null,"Hassane",new Date(),false,4));
-        patientRepository.save(new Patient(null,"khdija",new Date(),true,8));
-        patientRepository.save(new Patient(null,"karim",new Date(),false,4));
-        patientRepository.save(new Patient(null,"Imran",new Date(),false,7));
+//        patientRepository.save(new Patient(null,"Hassane",new Date(),false,4));
+//        patientRepository.save(new Patient(null,"khdija",new Date(),true,8));
+//        patientRepository.save(new Patient(null,"karim",new Date(),false,4));
+//        patientRepository.save(new Patient(null,"Imran",new Date(),false,7));
+    }
+//    @Bean
+    CommandLineRunner commandLineRunner(PatientRepository patientRepository) {
+        return args -> {
+
+        };
     }
 }

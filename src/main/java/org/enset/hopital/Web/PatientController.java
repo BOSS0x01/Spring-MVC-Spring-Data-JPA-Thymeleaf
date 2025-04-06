@@ -38,7 +38,8 @@ private PatientRepository patientRepository;
     @GetMapping("/addPatient")
     public String addPatient(Model model) {
         model.addAttribute("patient", new Patient());
-        return "addPatient";
+        model.addAttribute("action","Add");
+        return "formPatient";
     }
 
     @PostMapping("/save")
@@ -46,5 +47,14 @@ private PatientRepository patientRepository;
         if (bindingResult.hasErrors()) return "redirect:/addPatient";
         patientRepository.save(patient);
         return "redirect:/index";
+    }
+
+    @GetMapping("/editPatient")
+    public String editPatient(Model model, Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null) throw new RuntimeException("Patient not found");
+        model.addAttribute("patient", patient);
+        model.addAttribute("action","Edit");
+        return "formPatient";
     }
 }
