@@ -1,5 +1,6 @@
 package org.enset.hopital.Web;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.enset.hopital.Entities.Patient;
 import org.enset.hopital.Repositoty.PatientRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +40,11 @@ private PatientRepository patientRepository;
         model.addAttribute("patient", new Patient());
         return "addPatient";
     }
+
     @PostMapping("/save")
-    public String save(Model model, Patient patient) {
+    public String save(Model model, @Valid Patient patient , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "redirect:/addPatient";
         patientRepository.save(patient);
-        return "/addPatient";
+        return "redirect:/index";
     }
 }
