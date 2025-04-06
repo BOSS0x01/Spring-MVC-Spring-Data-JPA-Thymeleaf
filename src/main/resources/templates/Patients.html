@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="template1" >
 
 
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/webjars/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet"   href="/webjars/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body class="p-4">
-<div class="border rounded   p-2 bg-white">
-    <h2 class="text-xl mb-4 w-fit">List des Patients</h2>
+<div class="border rounded bg-white mx-auto container px-6 py-2 my-6" layout:fragment="content">
+    <h2 class="text-xl mb-4 w-fit">Patient list</h2>
     <form th:action="@{index}"  method="GET">
-        <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-2 py-1 my-2 border rounded bg-white">
+        <label>
+            <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-2 py-1 my-2 border rounded bg-white">
+        </label>
         <button type="submit" class="px-2 py-1 my-2 border rounded bg-blue-500 text-white"><i class="fas fa-search"></i> </button>
     </form>
     <table class="table-auto w-full">
@@ -34,28 +38,28 @@
             <td class=" p-2" th:text="${p.malade}"></td>
             <td class=" p-2" th:text="${p.score}"></td>
             <td class=" p-2">
-                <button onclick="javascript:return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2">
+                <button onclick="return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2">
                     <a th:href="@{delete(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-trash" ></i> </a>
                 </button>
             </td>
         </tr>
         </tbody>
     </table>
-    <nav aria-label="Page navigation example" >
-        <ul class="inline-flex -space-x-px  mt-4 mb-4">
+    <nav class="">
+        <ul class="my-4 flex flex-wrap justify-center space-y-6">
             <li>
                 <a th:href="@{/index(page=${(currentPage - 1)>=0? currentPage - 1:0},keyword=${keyword})}"
                 class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 "
                    th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50'">Previous</a>
             </li>
-            <li th:each="page,status:${pages}" >
+            <li   th:each="page,status:${pages}" >
                 <a th:href="@{/index(page=${status.index},keyword=${keyword})}"
                    th:class="${currentPage==status.index?'bg-blue-50 border border-gray-300 text-blue-600 hover:bg-blue-100 hover:text-blue-700  py-2 px-3':'bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3'}"
                    th:text="${status.index+1}"></a>
             </li>
             <li>
                 <a th:href="@{/index(page=${(currentPage + 1) < pages.length ? currentPage + 1 : pages.length - 1},keyword=${keyword})}"
-                   class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 "
+                   class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg py-2 px-3 "
                    th:classappend="${currentPage == pages.length - 1} ? 'pointer-events-none opacity-50'">Next</a>
             </li>
         </ul>
