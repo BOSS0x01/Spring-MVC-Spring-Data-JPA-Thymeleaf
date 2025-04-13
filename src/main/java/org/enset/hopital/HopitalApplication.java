@@ -7,8 +7,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import java.util.Date;
 
@@ -29,11 +32,34 @@ public class HopitalApplication implements CommandLineRunner {
 //        patientRepository.save(new Patient(null,"Imran",new Date(),false,7));
     }
 //    @Bean
-    CommandLineRunner commandLineRunner(PatientRepository patientRepository) {
+    CommandLineRunner start(PatientRepository patientRepository) {
         return args -> {
 
         };
     }
+
+    @Bean
+    CommandLineRunner commandLineRunner(JdbcUserDetailsManager jdbcUserDetailsManager) {
+        return args -> {
+            PasswordEncoder encoder = passwordEncoder();
+            UserDetails user11 = jdbcUserDetailsManager.loadUserByUsername("user11");
+            if (user11 == null)
+                jdbcUserDetailsManager.createUser(
+                User.withUsername("user11").password(encoder.encode( "1234")).roles("USER").build()
+                );
+            UserDetails user22 = jdbcUserDetailsManager.loadUserByUsername("user22");
+            if (user22 == null)
+                jdbcUserDetailsManager.createUser(
+                User.withUsername("user22").password(encoder.encode( "1234")).roles("USER").build()
+                );
+            UserDetails admin2 = jdbcUserDetailsManager.loadUserByUsername("admin2");
+            if (admin2 == null)
+                jdbcUserDetailsManager.createUser(
+                User.withUsername("admin2").password(encoder.encode( "1234")).roles("ADMIN","USER").build()
+                );
+        };
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
