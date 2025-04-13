@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="htttp://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,7 +10,6 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
 <!-- component -->
 <div class="h-full w-full">
-
   <nav role="navigation" class="bg-white shadow xl:block hidden">
     <div class="mx-auto container px-6 py-2 xl:py-0">
       <div class="flex items-center justify-between">
@@ -108,7 +107,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
         </button>
         <div class="flex">
           <div class="hidden xl:flex md:mr-6 xl:mr-16">
-            <a th:href="@{/index}" class="focus:text-indigo-700 border-b-2 border-transparent focus:border-indigo-700 flex px-5 items-center py-6 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
+            <a th:href="@{/user/index}" class="focus:text-indigo-700 border-b-2 border-transparent focus:border-indigo-700 flex px-5 items-center py-6 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
               <span class="mr-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-grid" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z"></path>
@@ -152,12 +151,17 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             </a>
           </div>
           <div class="hidden xl:flex items-center">
-            <div class="relative md:mr-6 my-2">
-              <a th:href="@{/addPatient}">
+            <div class="relative md:mr-6 my-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+              <a th:href="@{/admin/addPatient}">
                 <button class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:text-indigo-700 focus:outline-none bg-gray-100 border-gray-300 border transition duration-150 ease-in-out hover:bg-gray-300 rounded text-gray-600 px-5 py-2 text-xs">Add Patient</button>
               </a>
             </div>
+            <div>
+                <div sec:authentication="name"  > </div>
+                <div class="text-s italic " sec:authentication="name" ></div>
+              </div>
             <div class="ml-6 relative">
+
               <button aria-label="dropdown" class="focus:outline-none border-b-2 border-transparent focus:border-indigo-700 py-3  focus:text-indigo-700 text-gray-600 hover:text-indigo-700 flex items-center relative" onclick="dropdownHandler(this)">
                 <ul class="p-2 w-40 border-r bg-white absolute rounded right-0 shadow top-0 mt-16 hidden">
                   <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
@@ -170,17 +174,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                       <span class="ml-2">My Profile</span>
                     </a>
                   </li>
-                  <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
-                    <a href="javascript:void(0)" class="focus:underline focus:text-indigo-700 focus:outline-none flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <circle cx="12" cy="12" r="9" />
-                        <line x1="12" y1="17" x2="12" y2="17.01" />
-                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                      </svg>
-                      <span class="ml-2">Help Center</span>
-                    </a>
-                  </li>
+
                   <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 flex items-center focus:text-indigo-700 focus:outline-none">
                     <a href="javascript:void(0)" class="focus:underline focus:text-indigo-700 focus:outline-none flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -190,6 +184,17 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                       </svg>
                       <span class="ml-2">Account Settings</span>
                     </a>
+                  </li>
+                  <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
+                    <a class="focus:underline focus:text-indigo-700 focus:outline-none flex items-center" th:href="@{/logout}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"width="20" height="20"   fill="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M24 4C12.972292 4 4 12.972292 4 24C4 35.027708 12.972292 44 24 44C30.348948 44 36.015633 41.02311 39.675781 36.400391 A 1.50015 1.50015 0 1 0 37.324219 34.537109C34.208367 38.47239 29.413052 41 24 41C14.593708 41 7 33.406292 7 24C7 14.593708 14.593708 7 24 7C29.413052 7 34.208367 9.5276097 37.324219 13.462891 A 1.50015 1.50015 0 1 0 39.675781 11.599609C36.015633 6.9768903 30.348948 4 24 4 z M 36.484375 16.484375 A 1.50015 1.50015 0 0 0 35.439453 19.060547L38.876953 22.498047L18.501953 22.480469 A 1.50015 1.50015 0 1 0 18.498047 25.480469L38.880859 25.498047L35.439453 28.939453 A 1.50015 1.50015 0 1 0 37.560547 31.060547L43.560547 25.060547 A 1.50015 1.50015 0 0 0 43.560547 22.939453L37.560547 16.939453 A 1.50015 1.50015 0 0 0 36.484375 16.484375 z" />
+                      </svg>
+                      <span class="ml-2">logout</span>
+                    </a>
+                    <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+                      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
                   </li>
                 </ul>
                 <div class="cursor-pointer flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-white transition duration-150 ease-in-out">
@@ -216,8 +221,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
         </svg>
       </div>
       <div class="flex items-center">
-        <div class="relative mr-6">
-          <a th:href="@{/addPatient}">
+        <div class="relative mr-6 " th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+          <a th:href="@{/admin/addPatient}">
           <button class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:outline-none bg-gray-100 border-gray-300 border transition duration-150 ease-in-out hover:bg-gray-300 rounded text-gray-600 px-5 py-2 text-xs">Add Patient</button>
           </a>
         </div>
@@ -257,7 +262,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
               </div>
               <ul class="f-m-m">
                 <li>
-                  <a class="cursor-pointer" th:href="@{/index}">
+                  <a class="cursor-pointer" th:href="@{/user/index}">
                     <div class="text-gray-800 pt-10">
                       <div class="flex items-center">
                         <div class="w-6 h-6 md:w-8 md:h-8 text-indigo-700">
@@ -371,12 +376,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
       </div>
     </div>
   </nav>
-
   <section layout:fragment="content">
-
-
   </section>
-
   <script>
     function dropdownHandler(element) {
       let single = element.getElementsByTagName("ul")[0];
@@ -427,7 +428,6 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
       }
     };
   </script>
-
   <!-- Code block ends -->
 </div>
 </body>

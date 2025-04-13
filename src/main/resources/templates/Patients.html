@@ -13,7 +13,7 @@ layout:decorate="template1" >
 <body class="p-4">
 <div class="border rounded bg-white mx-auto container px-6 py-2 my-6" layout:fragment="content">
     <h2 class="text-xl mb-4 w-fit">Patient list</h2>
-    <form th:action="@{index}"  method="GET">
+    <form th:action="@{/index}"  method="GET">
         <label>
             <input type="text" placeholder="Search by name" name="keyword" th:value="${keyword}" class="px-2 py-1 my-2 border rounded bg-white">
         </label>
@@ -21,14 +21,14 @@ layout:decorate="template1" >
     </form>
     <table class="table-auto w-full">
         <thead>
-        <tr class="text-left text-gray-600 text-md">
-            <th class=" p-2">ID</th>
-            <th class=" p-2">NOM</th>
-            <th class=" p-2">DATE NAISSANCE</th>
-            <th class=" p-2">MALADE</th>
-            <th class=" p-2">SCORE</th>
-            <th class=" p-2">ACTION</th>
-        </tr>
+            <tr class="text-left text-gray-600 text-md">
+                <th class=" p-2">ID</th>
+                <th class=" p-2">NOM</th>
+                <th class=" p-2">DATE NAISSANCE</th>
+                <th class=" p-2">MALADE</th>
+                <th class=" p-2">SCORE</th>
+                <th class=" p-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">ACTION</th>
+            </tr>
         </thead>
         <tbody>
         <tr th:each="p : ${listPatients}" class="bg-white border-t-2 border-gray-200">
@@ -37,31 +37,33 @@ layout:decorate="template1" >
             <td class=" p-2" th:text="${p.dateNaissance}"></td>
             <td class=" p-2" th:text="${p.malade}"></td>
             <td class=" p-2" th:text="${p.score}"></td>
-            <td class=" p-2">
-                <button onclick="return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2">
-                    <a th:href="@{delete(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-trash" ></i> </a>
+            <td class=" p-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                <button onclick="return confirm('Are u sure?')" class="bg-red-500 text-white text-xs rounded py-1 px-2"  th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/admin/delete(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-trash" ></i> </a>
                 </button>
-                <button  class="bg-blue-500 text-white text-xs rounded py-1 px-2">
-                    <a th:href="@{editPatient(id=${p.id})}"> <i class="fa fa-edit" ></i> </a>
+                <button  class="bg-blue-500 text-white text-xs rounded py-1 px-2"  th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/admin/editPatient(id=${p.id}, keyword=${keyword},page=${currentPage})}"> <i class="fa fa-edit" ></i> </a>
                 </button>
             </td>
+
+
         </tr>
         </tbody>
     </table>
     <nav class="">
         <ul class="my-4 flex flex-wrap justify-center items-end space-y-6">
             <li>
-                <a th:href="@{/index(page=${(currentPage - 1)>=0? currentPage - 1:0},keyword=${keyword})}"
+                <a th:href="@{/user/index(page=${(currentPage - 1)>=0? currentPage - 1:0},keyword=${keyword})}"
                 class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 "
                    th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50'">Previous</a>
             </li>
             <li   th:each="page,status:${pages}" >
-                <a th:href="@{/index(page=${status.index},keyword=${keyword})}"
+                <a th:href="@{/user/index(page=${status.index},keyword=${keyword})}"
                    th:class="${currentPage==status.index?'bg-blue-50 border border-gray-300 text-blue-600 hover:bg-blue-100 hover:text-blue-700  py-2 px-3':'bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3'}"
                    th:text="${status.index+1}"></a>
             </li>
             <li>
-                <a th:href="@{/index(page=${(currentPage + 1) < pages.length ? currentPage + 1 : pages.length - 1},keyword=${keyword})}"
+                <a th:href="@{/user/index(page=${(currentPage + 1) < pages.length ? currentPage + 1 : pages.length - 1},keyword=${keyword})}"
                    class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg py-2 px-3 "
                    th:classappend="${currentPage == pages.length - 1} ? 'pointer-events-none opacity-50'">Next</a>
             </li>
